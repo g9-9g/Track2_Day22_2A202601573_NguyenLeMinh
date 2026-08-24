@@ -5,6 +5,7 @@ Tải cấu hình từ file .env và thiết lập biến môi trường LangSmi
     config.py tự động set LANGCHAIN_* vào os.environ khi được import.
 """
 import os
+import time
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -14,8 +15,8 @@ load_dotenv(_root / ".env")
 
 # ── LangSmith — PHẢI set trước khi import LangChain ──────────────────────
 os.environ["LANGCHAIN_TRACING_V2"] = os.getenv("LANGCHAIN_TRACING_V2", "true")
-os.environ["LANGCHAIN_API_KEY"]    = os.getenv("LANGCHAIN_API_KEY", "")
-os.environ["LANGCHAIN_PROJECT"]    = os.getenv("LANGCHAIN_PROJECT", "day22-lab")
+os.environ["LANGCHAIN_API_KEY"]    = os.getenv("LANGCHAIN_API_KEY") or os.getenv("LANGSMITH_API_KEY", "")
+os.environ["LANGCHAIN_PROJECT"]    = os.getenv("LANGCHAIN_PROJECT") or os.getenv("LANGSMITH_PROJECT", "day22-lab")
 os.environ["LANGCHAIN_ENDPOINT"]   = os.getenv("LANGCHAIN_ENDPOINT", "https://api.smith.langchain.com")
 
 # ── Provider mặc định ─────────────────────────────────────────────────────
@@ -30,8 +31,8 @@ OPENAI_EMBEDDING_MODEL = os.getenv("OPENAI_EMBEDDING_MODEL", "text-embedding-3-s
 
 # ── Google Gemini ─────────────────────────────────────────────────────────
 GOOGLE_API_KEY          = os.getenv("GOOGLE_API_KEY", "")
-GEMINI_MODEL            = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
-GEMINI_EMBEDDING_MODEL  = os.getenv("GEMINI_EMBEDDING_MODEL", "models/embedding-001")
+GEMINI_MODEL            = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite")
+GEMINI_EMBEDDING_MODEL  = os.getenv("GEMINI_EMBEDDING_MODEL", "models/gemini-embedding-001")
 
 # ── Anthropic ─────────────────────────────────────────────────────────────
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
@@ -39,7 +40,7 @@ ANTHROPIC_MODEL   = os.getenv("ANTHROPIC_MODEL", "claude-haiku-4-5-20251001")
 
 # ── Ollama (local, không cần API key) ────────────────────────────────────
 OLLAMA_BASE_URL         = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
-OLLAMA_MODEL            = os.getenv("OLLAMA_MODEL", "llama3.1")
+OLLAMA_MODEL            = os.getenv("OLLAMA_MODEL", "qwen2.5:1.5b")
 OLLAMA_EMBEDDING_MODEL  = os.getenv("OLLAMA_EMBEDDING_MODEL", "nomic-embed-text")
 
 # ── OpenRouter ────────────────────────────────────────────────────────────
@@ -50,6 +51,7 @@ OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 # ── LangSmith ─────────────────────────────────────────────────────────────
 LANGSMITH_API_KEY = os.getenv("LANGCHAIN_API_KEY", "")
 LANGSMITH_PROJECT = os.getenv("LANGCHAIN_PROJECT", "day22-lab")
+TRACING_ENABLED = os.getenv("LANGCHAIN_TRACING_V2", "true").lower() == "true"
 
 
 def validate() -> bool:
@@ -59,16 +61,19 @@ def validate() -> bool:
     """
     missing = []
 
-    if not LANGSMITH_API_KEY:
+    def is_missing(value: str) -> bool:
+        return not value or value.startswith("your_") or value.endswith("...")
+
+    if TRACING_ENABLED and is_missing(LANGSMITH_API_KEY):
         missing.append("LANGCHAIN_API_KEY (LangSmith)")
 
-    if PROVIDER == "openai" and not OPENAI_API_KEY:
+    if PROVIDER == "openai" and is_missing(OPENAI_API_KEY):
         missing.append("OPENAI_API_KEY")
-    elif PROVIDER == "gemini" and not GOOGLE_API_KEY:
+    elif PROVIDER == "gemini" and is_missing(GOOGLE_API_KEY):
         missing.append("GOOGLE_API_KEY")
-    elif PROVIDER == "anthropic" and not ANTHROPIC_API_KEY:
+    elif PROVIDER == "anthropic" and is_missing(ANTHROPIC_API_KEY):
         missing.append("ANTHROPIC_API_KEY")
-    elif PROVIDER == "openrouter" and not OPENROUTER_API_KEY:
+    elif PROVIDER == "openrouter" and is_missing(OPENROUTER_API_KEY):
         missing.append("OPENROUTER_API_KEY")
     # Ollama: không cần API key
 
@@ -81,6 +86,13 @@ def validate() -> bool:
 
     print(f"✅ Config OK  |  Provider: {PROVIDER.upper()}  |  Project: {LANGSMITH_PROJECT}")
     return True
+
+
+def wait_for_gemini_embedding_quota():
+    """Chờ sang cửa sổ quota mới sau khi index trên Gemini free tier."""
+    if PROVIDER == "gemini":
+        print("⏳ Chờ 65 giây để reset quota embedding Gemini free tier...")
+        time.sleep(65)
 
 
 if __name__ == "__main__":

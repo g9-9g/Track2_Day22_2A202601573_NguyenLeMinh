@@ -195,6 +195,18 @@ cd src && python run_all.py --step 3
 
 ## Nộp bài
 
+### URL bài nộp
+
+- GitHub repository (public):
+  <https://github.com/g9-9g/Track2_Day22_2A202601573_NguyenLeMinh>
+- LangSmith project `day22-lab`:
+  <https://smith.langchain.com/o/d959736e-1c7a-41d1-882d-192c7ba6ce6a/projects/p/d22b007c-6dcb-4b92-8b82-f389b6a05696>
+
+Kết quả chính: đã đánh giá đủ 50 QA pairs cho mỗi prompt version. V1 đạt
+`faithfulness = 0.9593`, V2 đạt `faithfulness = 0.8127`; mục tiêu `>= 0.8`
+được đáp ứng. Bảng đối chiếu từng tiêu chí nằm tại
+[`evidence/RUBRIC_CHECKLIST.md`](evidence/RUBRIC_CHECKLIST.md).
+
 ### 1. Tạo GitHub repository
 
 Tạo repository public mới trên GitHub với tên ví dụ `day22-langsmith-lab`.

@@ -1,5 +1,7 @@
 # API keys — KHÔNG BAO GIỜ commit file này
 .env
+.env.*
+!.env.example
 
 # Python
 __pycache__/
@@ -26,5 +28,9 @@ env/
 # macOS
 .DS_Store
 
-# Lab outputs (không commit, chỉ nộp evidence/)
-data/ragas_report.json
+# Checkpoint trung gian (không nộp); báo cáo RAGAS chính thức phải được commit.
+data/rag_outputs_*.json
+data/ragas_metrics_*.json
+
+# Ảnh nguồn cục bộ; bài nộp dùng các tên evidence chuẩn ở trên.
+evidence/image.png
