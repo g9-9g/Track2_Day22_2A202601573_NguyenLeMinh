@@ -201,6 +201,13 @@ cd src && python run_all.py --step 3
   <https://github.com/g9-9g/Track2_Day22_2A202601573_NguyenLeMinh>
 - LangSmith project `day22-lab`:
   <https://smith.langchain.com/o/d959736e-1c7a-41d1-882d-192c7ba6ce6a/projects/p/d22b007c-6dcb-4b92-8b82-f389b6a05696>
+- Public LangSmith trace — RAG pipeline:
+  <https://smith.langchain.com/public/885f69c0-9d19-4b2b-96c9-c738235cdb17/r>
+- Public LangSmith trace — A/B routing:
+  <https://smith.langchain.com/public/fc7e2571-e8d9-4cfb-a1e1-a48ed0eca783/r>
+
+LangSmith hiện hỗ trợ public từng trace thay vì public toàn bộ tracing project;
+hai link trên có thể mở mà không cần tài khoản organization.
 
 Kết quả chính: đã đánh giá đủ 50 QA pairs cho mỗi prompt version. V1 đạt
 `faithfulness = 0.9593`, V2 đạt `faithfulness = 0.8127`; mục tiêu `>= 0.8`

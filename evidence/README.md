@@ -32,4 +32,9 @@ Mục tiêu rubric được đạt vì faithfulness tốt nhất là 0.9593, cao
 Chi tiết URL Prompt Hub nằm ở đầu `02_ab_routing_log.txt` để người chấm đối
 chiếu trực tiếp.
 
+Public traces để người chấm xem không cần quyền organization:
+
+- RAG: <https://smith.langchain.com/public/885f69c0-9d19-4b2b-96c9-c738235cdb17/r>
+- A/B routing: <https://smith.langchain.com/public/fc7e2571-e8d9-4cfb-a1e1-a48ed0eca783/r>
+
 Đối chiếu đầy đủ từng tiêu chí chấm điểm: `RUBRIC_CHECKLIST.md`.

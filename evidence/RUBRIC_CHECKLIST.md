@@ -49,6 +49,7 @@
 - [x] `evidence/README.md` có phân tích A/B.
 - [x] GitHub repository là public.
 - [x] Không commit `.env`; quét source không phát hiện API key thật.
-- [ ] LangSmith project hiện vẫn private; cần bật public/share nếu cổng chấm yêu
-  cầu người chấm truy cập không cần tài khoản organization.
-- [ ] Các thay đổi hiện tại cần được commit và push trước khi nộp.
+- [x] LangSmith không hỗ trợ public toàn bộ tracing project trong giao diện hiện
+  tại; đã public một trace RAG và một trace A/B. Cả hai link trả HTTP 200 khi
+  truy cập không dùng API key và được ghi trong README.
+- [x] Bài đã được commit và push lên nhánh `main` của repository public.
